@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import type { Todo, FilterType, SortType, Subject } from "@/types/todo"
 import { TodoItem } from "./todo-item"
@@ -18,7 +17,6 @@ interface TodoListProps {
   onStatusChange: (id: string, status: "Todo" | "Doing" | "Done") => void
   onTitleChange: (id: string, title: string) => void
   onDelete: (id: string) => void
-  onReorder: (draggedId: string, targetId: string) => void
 }
 
 export function TodoList({
@@ -32,29 +30,7 @@ export function TodoList({
   onStatusChange,
   onTitleChange,
   onDelete,
-  onReorder,
 }: TodoListProps) {
-  const [draggedItem, setDraggedItem] = useState<string | null>(null)
-
-  const handleDragStart = (e: React.DragEvent, id: string) => {
-    setDraggedItem(id)
-    e.dataTransfer.effectAllowed = "move"
-  }
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = "move"
-  }
-
-  const handleDrop = (e: React.DragEvent, targetId: string) => {
-    e.preventDefault()
-
-    if (draggedItem && draggedItem !== targetId) {
-      onReorder(draggedItem, targetId)
-    }
-    setDraggedItem(null)
-  }
-
   // Apply all filters
   let filteredTodos = filterTodos(todos, filter)
   filteredTodos = filterTodosBySubject(filteredTodos, selectedSubject)
@@ -133,14 +109,9 @@ export function TodoList({
           todo={todo}
           subjects={subjects}
           darkMode={darkMode}
-          draggedItem={draggedItem}
           onStatusChange={onStatusChange}
           onTitleChange={onTitleChange}
-          onDelete={onDelete}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        />
+          onDelete={onDelete} draggedItem={null}        />
       ))}
     </div>
   )

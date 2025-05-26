@@ -12,11 +12,10 @@ export const AVAILABLE_COLORS = [
   { id: "emerald", name: "Emerald", class: "bg-emerald-500" },
   { id: "violet", name: "Violet", class: "bg-violet-500" },
   { id: "rose", name: "Rose", class: "bg-rose-500" },
-  { id: "lime", name: "Lime", class: "bg-lime-500" },
-  { id: "amber", name: "Amber", class: "bg-amber-500" },
+  { id: "lime", name: "Lime", class: "bg-lime-500" }
 ]
 
-export const getColorClass = (colorId: string): string => {
-  const color = AVAILABLE_COLORS.find((c) => c.id === colorId)
-  return color?.class || "bg-gray-500"
+export function getColorClass(colorId: string): string {
+  const color = AVAILABLE_COLORS.find(c => c.id === colorId)
+  return color?.class || "bg-gray-500" // fallback to gray if color not found
 }

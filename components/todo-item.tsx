@@ -18,9 +18,6 @@ interface TodoItemProps {
   onStatusChange: (id: string, status: "Todo" | "Doing" | "Done") => void
   onTitleChange: (id: string, title: string) => void
   onDelete: (id: string) => void
-  onDragStart: (e: React.DragEvent, id: string) => void
-  onDragOver: (e: React.DragEvent) => void
-  onDrop: (e: React.DragEvent, targetId: string) => void
 }
 
 export function TodoItem({
@@ -31,9 +28,6 @@ export function TodoItem({
   onStatusChange,
   onTitleChange,
   onDelete,
-  onDragStart,
-  onDragOver,
-  onDrop,
 }: TodoItemProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState("")
@@ -63,10 +57,6 @@ export function TodoItem({
 
   return (
     <div
-      draggable
-      onDragStart={(e) => onDragStart(e, todo.id)}
-      onDragOver={onDragOver}
-      onDrop={(e) => onDrop(e, todo.id)}
       className={`group rounded-xl p-4 shadow-lg transition-all duration-300 hover:shadow-xl cursor-move ${
         darkMode ? "bg-gray-800 hover:bg-gray-750" : "bg-white hover:bg-gray-50"
       } ${draggedItem === todo.id ? "opacity-50 scale-95" : ""} ${isOverdueTask ? "border-l-4 border-red-500" : ""}`}
