@@ -2,8 +2,6 @@
 
 Aplikasi web untuk membantu mahasiswa dalam mengelola dan memantau tugas-tugas dari berbagai mata kuliah dengan lebih terorganisir dan efisien. Dibangun menggunakan **Next.js**, **TypeScript**, dan **Tailwind CSS**, aplikasi ini hadir dengan antarmuka yang modern, responsif, dan mendukung mode gelap.
 
-![Preview](./public/images/todolist.png)
-
 ---
 
 ## ✨ Fitur
