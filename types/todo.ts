@@ -1,11 +1,12 @@
 export interface Todo {
+  createdAt: string | number | Date
   id: string
   title: string
-  subject: string
-  week: number
   status: "Todo" | "Doing" | "Done"
   deadline: string
-  createdAt: Date
+  week: number
+  subject: string
+  submissionPlace: string // Ubah dari optional menjadi required dengan default value ""
 }
 
 export type FilterType = "all" | "Todo" | "Doing" | "Done" | "completed" | "incomplete"

@@ -1,38 +1,45 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Moon, Sun, GraduationCap } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import type { FilterType, SortType } from "@/types/todo"
-import { useTodos } from "@/hooks/use-todos"
-import { useSubjects } from "@/hooks/use-subjects"
-import { useLocalStorage } from "@/hooks/use-local-storage"
-import { SubjectManager } from "./subject-manager"
-import { TodoForm } from "./todo-form"
-import { TodoStats } from "./todo-stats"
-import { TodoFilters } from "./todo-filters"
-import { TodoList } from "./todo-list"
+import { useState } from "react";
+import { Moon, Sun, GraduationCap } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { FilterType, SortType } from "@/types/todo";
+import { useTodos } from "@/hooks/use-todos";
+import { useSubjects } from "@/hooks/use-subjects";
+import { useLocalStorage } from "@/hooks/use-local-storage";
+import { SubjectManager } from "./subject-manager";
+import { TodoForm } from "./todo-form";
+import { TodoStats } from "./todo-stats";
+import { TodoFilters } from "./todo-filters";
+import { TodoList } from "./todo-list";
 
 export function TodoApp() {
-  const { subjects, addSubject, updateSubject, deleteSubject } = useSubjects()
-  const { todos, addTodo, updateTodoStatus, updateTodoTitle, deleteTodo, deleteTodosBySubject, reorderTodos } =
-    useTodos()
-  const [filter, setFilter] = useState<FilterType>("all")
-  const [sortBy, setSortBy] = useState<SortType>("newest")
-  const [selectedSubject, setSelectedSubject] = useState("all")
-  const [selectedWeek, setSelectedWeek] = useState(0)
-  const [darkMode, setDarkMode] = useLocalStorage("darkMode", false)
+  const { subjects, addSubject, updateSubject, deleteSubject } = useSubjects();
+  const {
+    todos,
+    addTodo,
+    updateTodoStatus,
+    deleteTodo,
+    updateTodo, // Menggunakan fungsi updateTodo yang baru
+    deleteTodosBySubject, // Pastikan ini diimpor jika digunakan
+    isInitialized,
+  } = useTodos();
+  const [filter, setFilter] = useState<FilterType>("all");
+  const [sortBy, setSortBy] = useState<SortType>("newest");
+  const [selectedSubject, setSelectedSubject] = useState("all");
+  const [selectedWeek, setSelectedWeek] = useState(0);
+  const [darkMode, setDarkMode] = useLocalStorage("darkMode", false);
 
   const handleDeleteSubject = (subjectId: string) => {
-    // Delete all todos related to this subject
-    deleteTodosBySubject(subjectId)
-    // Delete the subject
-    deleteSubject(subjectId)
-  }
+    // Hapus semua tugas yang terkait dengan mata kuliah ini
+    deleteTodosBySubject(subjectId);
+    // Hapus mata kuliah
+    deleteSubject(subjectId);
+  };
 
   const getTodosCountBySubject = (subjectId: string) => {
-    return todos.filter((todo) => todo.subject === subjectId).length
-  }
+    return todos.filter((todo) => todo.subject === subjectId).length;
+  };
 
   return (
     <div
@@ -53,7 +60,9 @@ export function TodoApp() {
               <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
                 StudyMate
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Your best friend for college tasks</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Teman terbaikmu untuk tugas kuliah
+              </p>
             </div>
           </div>
           <Button
@@ -67,9 +76,9 @@ export function TodoApp() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Konten Utama */}
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Subject Manager */}
+        {/* Manajer Mata Kuliah */}
         <SubjectManager
           subjects={subjects}
           onAddSubject={addSubject}
@@ -79,10 +88,10 @@ export function TodoApp() {
           todosCount={getTodosCountBySubject}
         />
 
-        {/* Add Todo Form */}
+        {/* Formulir Tambah Tugas */}
         <TodoForm subjects={subjects} onAddTodo={addTodo} darkMode={darkMode} />
 
-        {/* Stats and Controls */}
+        {/* Statistik dan Kontrol */}
         {(subjects.length > 0 || todos.length > 0) && (
           <div
             className={`rounded-xl p-6 mb-6 shadow-lg transition-colors duration-300 ${
@@ -107,19 +116,19 @@ export function TodoApp() {
           </div>
         )}
 
-        {/* Todo List */}
+        {/* Daftar Tugas */}
         <TodoList
           todos={todos}
           subjects={subjects}
+          darkMode={darkMode}
           filter={filter}
           sortBy={sortBy}
           selectedSubject={selectedSubject}
           selectedWeek={selectedWeek}
-          darkMode={darkMode}
           onStatusChange={updateTodoStatus}
-          onTitleChange={updateTodoTitle}
+          onUpdate={updateTodo} // Menggunakan fungsi updateTodo yang baru
           onDelete={deleteTodo}
-          onReorder={reorderTodos}
+          onTodosChange={todosUpdated => { /* handle updated todos if needed */ }} // Menambahkan prop onTodosChange
         />
       </main>
 
@@ -131,7 +140,7 @@ export function TodoApp() {
       >
         <div className="max-w-7xl mx-auto px-4 py-6 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Made with ❤️ to help students stay on top of their college tasks
+            Made with ❤️ to help students stay on top of their college tasks
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
             💡 Tip: Choose a task status when adding to keep your tracking accurate.
@@ -139,5 +148,5 @@ export function TodoApp() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

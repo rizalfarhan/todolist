@@ -1,58 +1,61 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Plus, BookOpen, AlertCircle, Calendar } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { getTodayDate } from "@/utils/date"
-import type { Subject } from "@/types/todo"
-import ReactDatePicker, { registerLocale } from "react-datepicker"
-import { enUS } from "date-fns/locale"
-import "react-datepicker/dist/react-datepicker.css"
-registerLocale("en-US", enUS)
+import { useState } from "react";
+import { Plus, BookOpen, AlertCircle, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import type { Subject } from "@/types/todo";
+import ReactDatePicker, { registerLocale } from "react-datepicker";
+import { enUS } from "date-fns/locale";
+import "react-datepicker/dist/react-datepicker.css";
+registerLocale("en-US", enUS);
 
 interface TodoFormProps {
-  subjects: Subject[]
+  subjects: Subject[];
   onAddTodo: (
     title: string,
     subject: string,
     week: number,
     deadline: string,
-    status: "Todo" | "Doing" | "Done"
-  ) => void
-  darkMode: boolean
+    status: "Todo" | "Doing" | "Done",
+    submissionPlace: string
+  ) => void;
+  darkMode: boolean;
 }
 
 export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
-  const [newTitle, setNewTitle] = useState("")
-  const [newSubject, setNewSubject] = useState("")
-  const [newWeek, setNewWeek] = useState(1)
-  const [newDeadline, setNewDeadline] = useState<Date>(new Date())
-  const [newStatus, setNewStatus] = useState<"Todo" | "Doing" | "Done">("Todo")
+  const [newTitle, setNewTitle] = useState("");
+  const [newSubject, setNewSubject] = useState("");
+  const [newWeek, setNewWeek] = useState(1);
+  const [newDeadline, setNewDeadline] = useState<Date>(new Date());
+  const [newStatus, setNewStatus] = useState<"Todo" | "Doing" | "Done">("Todo");
+  const [newSubmissionPlace, setNewSubmissionPlace] = useState("");
 
   const handleSubmit = () => {
-    if (newTitle.trim() && newSubject) {
+    console.log({ newTitle, newDeadline, newSubmissionPlace }); // Debugging
+    if (newTitle.trim() && newDeadline.toISOString().split("T")[0].trim()) {
       onAddTodo(
         newTitle,
         newSubject,
         newWeek,
         newDeadline.toISOString().split("T")[0],
-        newStatus
-      )
-      setNewTitle("")
-      setNewSubject("")
-      setNewWeek(1)
-      setNewDeadline(new Date())
-      setNewStatus("Todo")
+        newStatus,
+        newSubmissionPlace || "" // Pastikan tidak undefined
+      );
+      setNewTitle("");
+      setNewSubject("");
+      setNewWeek(1);
+      setNewDeadline(new Date());
+      setNewStatus("Todo");
+      setNewSubmissionPlace("");
     }
-  }
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleSubmit()
+      handleSubmit();
     }
-  }
+  };
 
   if (subjects.length === 0) {
     return (
@@ -68,11 +71,11 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
             You need to add a course first before creating an assignment
           </p>
           <p className="text-sm text-gray-400 dark:text-gray-500">
-            Use the “Manage Courses” form above to add a new course.
+            Use the "Manage Courses" form above to add a new course.
           </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -87,9 +90,11 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
-        {/* Title Input */}
+        {/* Assignment Title */}
         <div className="lg:col-span-2">
-          <label className="block text-sm font-medium mb-2">Assignment Title</label>
+          <label className="block text-sm font-medium mb-2">
+            Assignment Title
+          </label>
           <Input
             type="text"
             placeholder="Enter assignment title..."
@@ -104,7 +109,7 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
           />
         </div>
 
-        {/* Subject Select */}
+        {/* Course */}
         <div>
           <label className="block text-sm font-medium mb-2">Course</label>
           <select
@@ -125,7 +130,7 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
           </select>
         </div>
 
-        {/* Week Select */}
+        {/* Week */}
         <div>
           <label className="block text-sm font-medium mb-2">Week</label>
           <select
@@ -145,12 +150,14 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
           </select>
         </div>
 
-        {/* Status Select */}
+        {/* Status */}
         <div>
           <label className="block text-sm font-medium mb-2">Status</label>
           <select
             value={newStatus}
-            onChange={(e) => setNewStatus(e.target.value as "Todo" | "Doing" | "Done")}
+            onChange={(e) =>
+              setNewStatus(e.target.value as "Todo" | "Doing" | "Done")
+            }
             className={`w-full px-3 py-2 rounded-md border-2 transition-colors duration-200 ${
               darkMode
                 ? "border-gray-600 bg-gray-700 focus:border-orange-500 text-white"
@@ -164,14 +171,31 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        {/* Deadline Input */}
-        <div className="flex-1">
+      {/* Submission Place, Deadline and Submit */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+        {/* Submission Place */}
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium mb-2">
+            Submission Place
+          </label>
+          <Input
+            type="text"
+            placeholder="Enter submission link or location..."
+            value={newSubmissionPlace}
+            onChange={(e) => setNewSubmissionPlace(e.target.value)}
+            className={`border-2 transition-colors duration-200 ${
+              darkMode
+                ? "border-gray-600 bg-gray-700 focus:border-orange-500 text-white"
+                : "border-orange-200 focus:border-orange-500 bg-white"
+            }`}
+          />
+        </div>
+
+        {/* Deadline */}
+        <div className="md:col-span-2">
           <label className="block text-sm font-medium mb-2">Deadline</label>
           <div className="relative">
-            <Calendar
-              className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-orange-500 z-10 pointer-events-none"
-            />
+            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-orange-500 z-10 pointer-events-none" />
             <ReactDatePicker
               selected={newDeadline}
               onChange={(date: Date | null) => date && setNewDeadline(date)}
@@ -187,12 +211,12 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
           </div>
         </div>
 
-        {/* Submit Button */}
-        <div className="flex items-end">
+        {/* Button */}
+        <div>
           <Button
             onClick={handleSubmit}
             disabled={!newTitle.trim() || !newSubject}
-            className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-8 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-8 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus className="h-5 w-4 mr-2" />
             Add Assignment
@@ -200,5 +224,5 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
