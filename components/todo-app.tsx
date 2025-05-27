@@ -51,9 +51,9 @@ export function TodoApp() {
             <GraduationCap className="h-8 w-8 text-orange-500" />
             <div>
               <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-                Pengingat Tugas Kuliah
+                StudyMate
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Kelola tugas kuliah dengan mudah dan efisien</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Your best friend for college tasks</p>
             </div>
           </div>
           <Button
@@ -131,10 +131,10 @@ export function TodoApp() {
       >
         <div className="max-w-7xl mx-auto px-4 py-6 text-center">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Dibuat dengan ❤️ untuk membantu mahasiswa mengelola tugas kuliah
+            Made with ❤️ to help students stay on top of their college tasks
           </p>
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-            💡 Tips: Pilih status tugas saat menambahkan untuk tracking yang lebih akurat
+            💡 Tip: Choose a task status when adding to keep your tracking accurate.
           </p>
         </div>
       </footer>

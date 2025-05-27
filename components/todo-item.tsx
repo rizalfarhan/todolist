@@ -1,9 +1,18 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
-import { Trash2, Edit3, Check, X, Calendar, Clock, BookOpen, Hash, AlertTriangle } from "lucide-react"
+import {
+  Trash2,
+  Edit3,
+  Check,
+  X,
+  Calendar,
+  Clock,
+  BookOpen,
+  Hash,
+  AlertTriangle,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import type { Todo, Subject } from "@/types/todo"
@@ -73,7 +82,7 @@ export function TodoItem({
             ) : (
               <div className="px-3 py-1 rounded-full bg-gray-500 text-white text-sm font-medium">
                 <BookOpen className="h-3 w-3 inline mr-1" />
-                Mata Kuliah Dihapus
+                Course Deleted
               </div>
             )}
             <div
@@ -82,7 +91,7 @@ export function TodoItem({
               }`}
             >
               <Hash className="h-3 w-3 inline mr-1" />
-              Minggu {todo.week}
+              Week {todo.week}
             </div>
           </div>
 
@@ -153,12 +162,12 @@ export function TodoItem({
               {todo.status !== "Done" && (
                 <div className="text-xs text-gray-500 dark:text-gray-400">
                   {isOverdueTask
-                    ? `Terlambat ${Math.abs(daysUntil)} hari`
+                    ? `Overdue by ${Math.abs(daysUntil)} day${Math.abs(daysUntil) > 1 ? "s" : ""}`
                     : daysUntil === 0
-                      ? "Deadline hari ini!"
+                      ? "Deadline today!"
                       : daysUntil === 1
-                        ? "Deadline besok"
-                        : `${daysUntil} hari lagi`}
+                        ? "Deadline tomorrow"
+                        : `${daysUntil} day${daysUntil > 1 ? "s" : ""} left`}
                 </div>
               )}
             </div>

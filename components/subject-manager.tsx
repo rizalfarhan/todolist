@@ -87,14 +87,14 @@ export function SubjectManager({
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-lg font-semibold flex items-center gap-2">
           <BookOpen className="h-5 w-5 text-orange-500" />
-          Kelola Mata Kuliah
+          Manage Courses
         </h2>
         <Button
           onClick={() => setIsAddingSubject(true)}
           className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white"
         >
           <Plus className="h-4 w-4 mr-2" />
-          Tambah Mata Kuliah
+          Add Course
         </Button>
       </div>
 
@@ -107,10 +107,10 @@ export function SubjectManager({
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-2">Nama Mata Kuliah</label>
+              <label className="block text-sm font-medium mb-2">Course Name</label>
               <Input
                 type="text"
-                placeholder="Contoh: Pemrograman Web"
+                placeholder="Example: Web Programming"
                 value={newSubjectName}
                 onChange={(e) => setNewSubjectName(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleAddSubject()}
@@ -122,7 +122,7 @@ export function SubjectManager({
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Warna</label>
+              <label className="block text-sm font-medium mb-2">Colors</label>
               <select
                 value={newSubjectColor}
                 onChange={(e) => setNewSubjectColor(e.target.value)}
@@ -143,11 +143,11 @@ export function SubjectManager({
           <div className="flex gap-2 mt-4">
             <Button onClick={handleAddSubject} className="bg-green-500 hover:bg-green-600 text-white">
               <Check className="h-4 w-4 mr-2" />
-              Simpan
+              Save
             </Button>
             <Button variant="outline" onClick={() => setIsAddingSubject(false)}>
               <X className="h-4 w-4 mr-2" />
-              Batal
+              Cancel
             </Button>
           </div>
         </div>
@@ -157,9 +157,9 @@ export function SubjectManager({
       {subjects.length === 0 ? (
         <div className="text-center py-8">
           <Palette className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-500 dark:text-gray-400 mb-2">Belum ada mata kuliah</p>
+          <p className="text-gray-500 dark:text-gray-400 mb-2">No courses yet</p>
           <p className="text-sm text-gray-400 dark:text-gray-500">
-            Tambahkan mata kuliah pertama Anda untuk mulai membuat tugas
+            Add your first course to begin creating tasks
           </p>
         </div>
       ) : (
@@ -205,7 +205,7 @@ export function SubjectManager({
                     <div className={`w-4 h-4 rounded-full ${subject.color}`}></div>
                     <div className="flex-1">
                       <h3 className="font-medium text-sm">{subject.name}</h3>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{todosCount(subject.id)} tugas</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{todosCount(subject.id)} tasks</p>
                     </div>
                   </div>
                   <div className="flex gap-1">

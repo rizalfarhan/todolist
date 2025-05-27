@@ -31,7 +31,7 @@ export function TodoStats({ todos, subjects, darkMode }: TodoStatsProps) {
         <div className={`px-4 py-3 rounded-lg ${darkMode ? "bg-gray-700" : "bg-gray-100"}`}>
           <div className="flex items-center gap-2">
             <Target className="h-4 w-4 text-gray-500" />
-            <span className="text-sm font-medium">Total Tugas</span>
+            <span className="text-sm font-medium">Total Tasks</span>
           </div>
           <p className="text-2xl font-bold mt-1">{totalCount}</p>
         </div>
@@ -40,7 +40,7 @@ export function TodoStats({ todos, subjects, darkMode }: TodoStatsProps) {
         <div className={`px-4 py-3 rounded-lg ${darkMode ? "bg-green-900" : "bg-green-100"}`}>
           <div className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-            <span className="text-sm font-medium">Selesai</span>
+            <span className="text-sm font-medium">Completed</span>
           </div>
           <p className="text-2xl font-bold mt-1 text-green-600 dark:text-green-400">{completedCount}</p>
         </div>
@@ -49,7 +49,7 @@ export function TodoStats({ todos, subjects, darkMode }: TodoStatsProps) {
         <div className={`px-4 py-3 rounded-lg ${darkMode ? "bg-orange-900" : "bg-orange-100"}`}>
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-            <span className="text-sm font-medium">Belum Selesai</span>
+            <span className="text-sm font-medium">Not Completed</span>
           </div>
           <p className="text-2xl font-bold mt-1 text-orange-600 dark:text-orange-400">{incompleteCount}</p>
         </div>
@@ -68,9 +68,9 @@ export function TodoStats({ todos, subjects, darkMode }: TodoStatsProps) {
       {totalCount > 0 && (
         <div className={`p-4 rounded-lg ${darkMode ? "bg-gray-700" : "bg-gray-100"}`}>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Progress Keseluruhan</span>
+            <span className="text-sm font-medium">Overall Progress</span>
             <span className="text-sm text-gray-500">
-              {completedCount} dari {totalCount} tugas
+              {completedCount} out of {totalCount} task
             </span>
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-3">
@@ -85,10 +85,10 @@ export function TodoStats({ todos, subjects, darkMode }: TodoStatsProps) {
       {/* Detailed Status Stats */}
       <div className="flex flex-wrap gap-3">
         <div className={`px-4 py-2 rounded-full ${darkMode ? "bg-gray-700" : "bg-gray-100"}`}>
-          <span className="text-sm font-medium">Todo: {getStatusCount(todos, "Todo")}</span>
+          <span className="text-sm font-medium">To Do: {getStatusCount(todos, "Todo")}</span>
         </div>
         <div className={`px-4 py-2 rounded-full ${darkMode ? "bg-blue-900" : "bg-blue-100"}`}>
-          <span className="text-sm font-medium">Doing: {getStatusCount(todos, "Doing")}</span>
+          <span className="text-sm font-medium">In Progress: {getStatusCount(todos, "Doing")}</span>
         </div>
         <div className={`px-4 py-2 rounded-full ${darkMode ? "bg-green-900" : "bg-green-100"}`}>
           <span className="text-sm font-medium">Done: {getStatusCount(todos, "Done")}</span>
@@ -118,7 +118,7 @@ export function TodoStats({ todos, subjects, darkMode }: TodoStatsProps) {
       {/* Current Week Highlight */}
       <div className={`px-4 py-2 rounded-lg ${darkMode ? "bg-orange-900" : "bg-orange-100"}`}>
         <span className="text-sm font-medium">
-          Minggu Ini (Minggu {currentWeek}): {getWeekCount(currentWeek)} tugas
+          This Week (Week {currentWeek}): {getWeekCount(currentWeek)} tasks
         </span>
       </div>
     </div>

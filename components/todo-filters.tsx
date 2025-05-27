@@ -39,13 +39,13 @@ export function TodoFilters({
   const getSortLabel = () => {
     switch (sortBy) {
       case "newest":
-        return "Terbaru"
+        return "Newest"
       case "oldest":
-        return "Terlama"
+        return "Oldest"
       case "deadline":
         return "Deadline"
       case "week":
-        return "Minggu"
+        return "Week"
       default:
         return "Terbaru"
     }
@@ -54,11 +54,11 @@ export function TodoFilters({
   const getFilterLabel = (filterType: FilterType) => {
     switch (filterType) {
       case "all":
-        return "Semua"
+        return "All"
       case "completed":
-        return "Selesai"
+        return "Completed"
       case "incomplete":
-        return "Belum Selesai"
+        return "Incomplete"
       case "Todo":
         return "Todo"
       case "Doing":
@@ -138,7 +138,7 @@ export function TodoFilters({
         {/* Subject Filter */}
         <div className="flex items-center gap-2">
           <BookOpen className="h-4 w-4 text-gray-500" />
-          <span className="text-sm font-medium">Mata Kuliah:</span>
+          <span className="text-sm font-medium">Course:</span>
           <select
             value={selectedSubject}
             onChange={(e) => onSubjectChange(e.target.value)}
@@ -146,7 +146,7 @@ export function TodoFilters({
               darkMode ? "border-gray-600 bg-gray-700 text-white" : "border-gray-300 bg-white"
             }`}
           >
-            <option value="all">Semua</option>
+            <option value="all">All</option>
             {subjects.map((subject) => (
               <option key={subject.id} value={subject.id}>
                 {subject.name}
@@ -158,7 +158,7 @@ export function TodoFilters({
         {/* Week Filter */}
         <div className="flex items-center gap-2">
           <Hash className="h-4 w-4 text-gray-500" />
-          <span className="text-sm font-medium">Minggu:</span>
+          <span className="text-sm font-medium">Week:</span>
           <select
             value={selectedWeek}
             onChange={(e) => onWeekChange(Number(e.target.value))}
@@ -166,10 +166,10 @@ export function TodoFilters({
               darkMode ? "border-gray-600 bg-gray-700 text-white" : "border-gray-300 bg-white"
             }`}
           >
-            <option value={0}>Semua</option>
+            <option value={0}>All</option>
             {Array.from({ length: 16 }, (_, i) => i + 1).map((week) => (
               <option key={week} value={week}>
-                Minggu {week}
+                Week {week}
               </option>
             ))}
           </select>

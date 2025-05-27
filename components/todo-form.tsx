@@ -1,17 +1,26 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
-import { Plus, BookOpen, AlertCircle } from "lucide-react"
+import { Plus, BookOpen, AlertCircle, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getTodayDate } from "@/utils/date"
 import type { Subject } from "@/types/todo"
+import ReactDatePicker, { registerLocale } from "react-datepicker"
+import { enUS } from "date-fns/locale"
+import "react-datepicker/dist/react-datepicker.css"
+registerLocale("en-US", enUS)
 
 interface TodoFormProps {
   subjects: Subject[]
-  onAddTodo: (title: string, subject: string, week: number, deadline: string, status: "Todo" | "Doing" | "Done") => void
+  onAddTodo: (
+    title: string,
+    subject: string,
+    week: number,
+    deadline: string,
+    status: "Todo" | "Doing" | "Done"
+  ) => void
   darkMode: boolean
 }
 
@@ -19,16 +28,22 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
   const [newTitle, setNewTitle] = useState("")
   const [newSubject, setNewSubject] = useState("")
   const [newWeek, setNewWeek] = useState(1)
-  const [newDeadline, setNewDeadline] = useState(getTodayDate())
+  const [newDeadline, setNewDeadline] = useState<Date>(new Date())
   const [newStatus, setNewStatus] = useState<"Todo" | "Doing" | "Done">("Todo")
 
   const handleSubmit = () => {
     if (newTitle.trim() && newSubject) {
-      onAddTodo(newTitle, newSubject, newWeek, newDeadline, newStatus)
+      onAddTodo(
+        newTitle,
+        newSubject,
+        newWeek,
+        newDeadline.toISOString().split("T")[0],
+        newStatus
+      )
       setNewTitle("")
       setNewSubject("")
       setNewWeek(1)
-      setNewDeadline(getTodayDate())
+      setNewDeadline(new Date())
       setNewStatus("Todo")
     }
   }
@@ -48,12 +63,12 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
       >
         <div className="text-center py-8">
           <AlertCircle className="h-12 w-12 text-orange-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">Belum Ada Mata Kuliah</h3>
+          <h3 className="text-lg font-semibold mb-2">No Course Yet</h3>
           <p className="text-gray-500 dark:text-gray-400 mb-4">
-            Anda perlu menambahkan mata kuliah terlebih dahulu sebelum membuat tugas
+            You need to add a course first before creating an assignment
           </p>
           <p className="text-sm text-gray-400 dark:text-gray-500">
-            Gunakan form "Kelola Mata Kuliah" di atas untuk menambahkan mata kuliah baru
+            Use the “Manage Courses” form above to add a new course.
           </p>
         </div>
       </div>
@@ -68,16 +83,16 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
     >
       <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
         <BookOpen className="h-5 w-5 text-orange-500" />
-        Tambah Tugas Kuliah Baru
+        Add a new course assignment
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
         {/* Title Input */}
         <div className="lg:col-span-2">
-          <label className="block text-sm font-medium mb-2">Judul Tugas</label>
+          <label className="block text-sm font-medium mb-2">Assignment Title</label>
           <Input
             type="text"
-            placeholder="Masukkan judul tugas..."
+            placeholder="Enter assignment title..."
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -91,7 +106,7 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
 
         {/* Subject Select */}
         <div>
-          <label className="block text-sm font-medium mb-2">Mata Kuliah</label>
+          <label className="block text-sm font-medium mb-2">Course</label>
           <select
             value={newSubject}
             onChange={(e) => setNewSubject(e.target.value)}
@@ -101,7 +116,7 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
                 : "border-orange-200 focus:border-orange-500 bg-white"
             }`}
           >
-            <option value="">Pilih Mata Kuliah</option>
+            <option value="">Select Course</option>
             {subjects.map((subject) => (
               <option key={subject.id} value={subject.id}>
                 {subject.name}
@@ -112,7 +127,7 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
 
         {/* Week Select */}
         <div>
-          <label className="block text-sm font-medium mb-2">Minggu Ke-</label>
+          <label className="block text-sm font-medium mb-2">Week</label>
           <select
             value={newWeek}
             onChange={(e) => setNewWeek(Number(e.target.value))}
@@ -124,7 +139,7 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
           >
             {Array.from({ length: 16 }, (_, i) => i + 1).map((week) => (
               <option key={week} value={week}>
-                Minggu {week}
+                Week {week}
               </option>
             ))}
           </select>
@@ -153,16 +168,23 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
         {/* Deadline Input */}
         <div className="flex-1">
           <label className="block text-sm font-medium mb-2">Deadline</label>
-          <Input
-            type="date"
-            value={newDeadline}
-            onChange={(e) => setNewDeadline(e.target.value)}
-            className={`border-2 transition-colors duration-200 ${
-              darkMode
-                ? "border-gray-600 bg-gray-700 focus:border-orange-500"
-                : "border-orange-200 focus:border-orange-500"
-            }`}
-          />
+          <div className="relative">
+            <Calendar
+              className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-orange-500 z-10 pointer-events-none"
+            />
+            <ReactDatePicker
+              selected={newDeadline}
+              onChange={(date: Date | null) => date && setNewDeadline(date)}
+              locale={enUS}
+              dateFormat="MMMM d, yyyy"
+              popperPlacement="bottom-start"
+              className={`w-full pl-10 py-2 rounded-md border-2 transition-colors duration-200 z-0 ${
+                darkMode
+                  ? "border-gray-600 bg-gray-700 focus:border-orange-500 text-white"
+                  : "border-orange-200 focus:border-orange-500 bg-white"
+              }`}
+            />
+          </div>
         </div>
 
         {/* Submit Button */}
@@ -172,8 +194,8 @@ export function TodoForm({ subjects, onAddTodo, darkMode }: TodoFormProps) {
             disabled={!newTitle.trim() || !newSubject}
             className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-8 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Plus className="h-4 w-4 mr-2" />
-            Tambah Tugas
+            <Plus className="h-5 w-4 mr-2" />
+            Add Assignment
           </Button>
         </div>
       </div>

@@ -39,26 +39,26 @@ export function TodoList({
   const sortedTodos = sortTodos(filteredTodos, sortBy)
 
   const getEmptyMessage = () => {
-    if (filter === "completed") {
-      return "Belum ada tugas yang selesai"
-    } else if (filter === "incomplete") {
-      return "Semua tugas sudah selesai! 🎉"
-    } else if (filter === "all" && selectedSubject === "all" && selectedWeek === 0) {
-      return "Belum ada tugas kuliah"
-    } else {
-      return "Tidak ada tugas yang sesuai dengan filter"
-    }
+  if (filter === "completed") {
+    return "No completed tasks yet"
+  } else if (filter === "incomplete") {
+    return "All tasks are done! 🎉"
+  } else if (filter === "all" && selectedSubject === "all" && selectedWeek === 0) {
+    return "No assignments available"
+  } else {
+    return "No tasks match the selected filter"
   }
+}
 
-  const getEmptyDescription = () => {
-    if (filter === "completed") {
-      return "Selesaikan beberapa tugas untuk melihatnya di sini"
-    } else if (filter === "incomplete") {
-      return "Kerja bagus! Semua tugas telah diselesaikan"
-    } else {
-      return "Tambahkan tugas baru atau ubah filter untuk melihat tugas lainnya"
-    }
+const getEmptyDescription = () => {
+  if (filter === "completed") {
+    return "Complete some tasks to see them here"
+  } else if (filter === "incomplete") {
+    return "Great job! All tasks are completed"
+  } else {
+    return "Add new tasks or change the filters to see more"
   }
+}
 
   if (sortedTodos.length === 0) {
     return (
@@ -75,31 +75,28 @@ export function TodoList({
       {/* Filter Summary */}
       <div className={`p-3 rounded-lg ${darkMode ? "bg-gray-800" : "bg-gray-50"} border-l-4 border-orange-500`}>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Menampilkan <span className="font-semibold text-orange-600 dark:text-orange-400">{sortedTodos.length}</span>{" "}
-          tugas
-          {filter !== "all" && (
-            <span>
-              {" "}
-              dengan status{" "}
-              <span className="font-semibold">
-                {filter === "completed" ? "Selesai" : filter === "incomplete" ? "Belum Selesai" : filter}
-              </span>
-            </span>
-          )}
-          {selectedSubject !== "all" && (
-            <span>
-              {" "}
-              untuk mata kuliah{" "}
-              <span className="font-semibold">{subjects.find((s) => s.id === selectedSubject)?.name || "Unknown"}</span>
-            </span>
-          )}
-          {selectedWeek !== 0 && (
-            <span>
-              {" "}
-              pada <span className="font-semibold">Minggu {selectedWeek}</span>
-            </span>
-          )}
-        </p>
+  Displaying <span className="font-semibold text-orange-600 dark:text-orange-400">{sortedTodos.length}</span> tasks
+  {filter !== "all" && (
+    <span>
+      {" "}with status{" "}
+      <span className="font-semibold">
+        {filter === "completed" ? "Completed" : filter === "incomplete" ? "Incomplete" : filter}
+      </span>
+    </span>
+  )}
+  {selectedSubject !== "all" && (
+    <span>
+      {" "}for subject{" "}
+      <span className="font-semibold">{subjects.find((s) => s.id === selectedSubject)?.name || "Unknown"}</span>
+    </span>
+  )}
+  {selectedWeek !== 0 && (
+    <span>
+      {" "}in <span className="font-semibold">Week {selectedWeek}</span>
+    </span>
+  )}
+</p>
+
       </div>
 
       {/* Todo Items */}

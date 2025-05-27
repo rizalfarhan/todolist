@@ -4,7 +4,7 @@ export const getTodayDate = (): string => {
 
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString)
-  return date.toLocaleDateString("id-ID", {
+  return date.toLocaleDateString("en-Us", {
     weekday: "short",
     year: "numeric",
     month: "short",
