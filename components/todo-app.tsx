@@ -61,7 +61,7 @@ export function TodoApp() {
                 StudyMate
               </h1>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Teman terbaikmu untuk tugas kuliah
+                Your best friend for college tasks
               </p>
             </div>
           </div>
